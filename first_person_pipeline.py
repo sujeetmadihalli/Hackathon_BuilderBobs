@@ -14,7 +14,7 @@ INPUT_DIR = 'IronsiteHackathonData/'
 OUTPUT_DIR = 'outputs/'
 MASTER_CSV = 'master_dashboard.csv'
 
-import os
+import os 
 if not os.path.exists(OUTPUT_DIR):
     os.makedirs(OUTPUT_DIR)
 
@@ -70,7 +70,8 @@ def process_video(input_video_path):
     fps = int(cap.get(cv2.CAP_PROP_FPS))
     total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
     
-    fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+    # Use 'avc1' (h264) so Streamlit/HTML5 can play the video natively!
+    fourcc = cv2.VideoWriter_fourcc(*'avc1')
     
     # We will write the output video at the *desired* process FPS 
     # so the annotated playback looks normal (just choppy)
