@@ -18,7 +18,6 @@ OUTPUT_DIR = "outputs/"
 # ---------------------------------------------------------
 # DATA LOADING
 # ---------------------------------------------------------
-@st.cache_data
 def load_data():
     if not os.path.exists(MASTER_CSV):
         return pd.DataFrame() # Return empty if not run yet
