@@ -11,7 +11,7 @@ REPORT_OUTPUT = 'outputs/Final_AI_Site_Report.txt'
 
 # TODO: Add your Gemini API Key here
 # Get a free key at: https://aistudio.google.com/
-API_KEY = "AIzaSyDjx9HXSZ4xEWwqVxUMXcY_EmlMSVwqiU0"
+API_KEY = "[ENCRYPTION_KEY]"
 genai.configure(api_key=API_KEY)
 
 def generate_site_report(df):
