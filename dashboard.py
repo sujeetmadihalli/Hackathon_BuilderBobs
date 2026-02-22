@@ -71,7 +71,23 @@ st.dataframe(
             max_value=100,
         ),
         "Peak Exertion (px)": st.column_config.NumberColumn("Peak Intensity"),
+        "AI_Trade": st.column_config.TextColumn("AI Identified Trade"),
+        "AI_UES": st.column_config.ProgressColumn(
+            "Universal Efficiency Score",
+            help="AI-generated synthetic score combining physical exertion with work output",
+            format="%f",
+            min_value=0,
+            max_value=100,
+        ),
     },
+    column_order=[
+        "Video", 
+        "Detected Task", 
+        "Productivity %", 
+        "Peak Exertion (px)", 
+        "AI_Trade", 
+        "AI_UES"
+    ],
     use_container_width=True,
     hide_index=True,
 )
@@ -95,6 +111,18 @@ if selected_video:
     m1.metric("Task Identified", video_data['Detected Task'])
     m2.metric("Productivity Score", f"{video_data['Productivity %']}%")
     m3.metric("Peak Exertion", f"{video_data['Peak Exertion (px)']} px")
+    
+    if 'AI_Trade' in video_data and pd.notna(video_data['AI_Trade']):
+        st.markdown("---")
+        st.markdown("### 🤖 Agent Qualitative Analysis")
+        ai1, ai2 = st.columns(2)
+        ai1.metric("Unified Efficiency Score (UES)", f"{video_data.get('AI_UES', 'N/A')}/100")
+        ai2.metric("Primary Trade Identified", video_data.get('AI_Trade', 'N/A'))
+        
+        st.info(f"**Performance Summary:** {video_data.get('AI_Summary', 'N/A')}")
+        st.write(f"**Specific Tasks Completed:** {video_data.get('AI_Tasks', 'N/A')}")
+        st.write(f"**Quantified Output:** {video_data.get('AI_Output', 'N/A')}")
+        st.markdown("---")
     
     # Load and display the generated matplotlib graph
     plot_path = os.path.join(OUTPUT_DIR, f"{selected_video}_plot.png")
