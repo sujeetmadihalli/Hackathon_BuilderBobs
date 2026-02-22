@@ -1,52 +1,176 @@
-# BuilderBobs Tracking Pipeline
+# 🏗️ IronSite BuilderBobs — AI Construction Productivity Pipeline
 
-This repository contains the source code for a computer vision pipeline developed during a hackathon to analyze construction worker activity and productivity from first-person (POV/body-cam) video feeds.
+> **Hackathon Project — February 2026**  
+> Analyze construction worker body-cam footage with computer vision + AI vision models to power a real-time supervisor dashboard.
+
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io)
+
+---
 
 ## Overview
 
-The system processes raw video footage to accomplish the following:
-1.  **Track Hand Movement:** Utilizes the MediaPipe Tasks Vision API to identify and track the pixel coordinates of the left and right wrists.
-2.  **Detect Construction Objects:** Uses a custom-trained YOLOv8 model (`yolov8n-construction.pt`) to detect context-specific objects in the frame (e.g., hard hats, tools, materials).
-3.  **Quantify Exertion and Productivity:** Calculates the Euclidean pixel distance traveled by the hands. If the hands are moving past a specific velocity threshold *and* interacting with a detected object, the worker is mathematically classified as "active".
-4.  **Visualize Data:** Provides an interactive `streamlit` dashboard for supervisors to view site-wide aggregates, leaderboards, and individual worker performance plots.
-5.  **Generate AI Site Reports:** Uses the Gemini 2.5 Flash LLM to automatically parse the generated pipeline metrics and produce a qualitative executive summary focused on productivity standouts and safety/ergonomic warnings.
+BuilderBobs is a **two-stage AI pipeline** that processes first-person (POV) body-camera footage from construction workers:
 
-## Core Components
+| Stage | Technology | Output |
+|-------|-----------|--------|
+| **1 — Quantitative** | OpenCV · MediaPipe · YOLOv8 | Productivity %, Peak Exertion, Annotated Video |
+| **2 — Qualitative** | Ollama LLaVA 7B (remote GPU) | Trade ID, Task Description, Universal Efficiency Score |
 
-*   **`first_person_pipeline.py`**: The core batch-processing engine. It reads all `.mp4` files from the `IronsiteHackathonData/` directory. To optimize processing time without losing the full timeline context, it mathematically downsamples the video feeds (e.g., analyzing at 5 FPS instead of 30 FPS). Outputs include:
-    *   Annotated MP4 videos with YOLO bounding boxes and MediaPipe landmarks.
-    *   Frame-by-frame exertion CSVs.
-    *   Matplotlib exertion line plots highlighting periods of active work.
-    *   A single `master_dashboard.csv` containing aggregated statistics for the entire site.
-*   **`dashboard.py`**: A Streamlit web application that reads the `master_dashboard.csv` to provide a clean, high-level UI for supervisors. Run via `streamlit run dashboard.py`.
-*   **`analyze_results.py`**: A standalone script that pipes the `master_dashboard.csv` aggregates into a structured prompt for the Gemini LLM. It outputs `outputs/Final_AI_Site_Report.txt`.
-*   **`excertion.py` & `test.py`**: Legacy scratchpad files demonstrating early iterations using YOLOv8 pose estimation before the pivot to the POV MediaPipe architecture.
+Both stages feed a unified **Streamlit supervisor dashboard**.
 
-## Requirements
+---
 
-*   Python 3.10+
-*   `opencv-python`
-*   `mediapipe`
-*   `ultralytics`
-*   `pandas`
-*   `matplotlib`
-*   `streamlit`
-*   `loguru`
-*   `google-generativeai` (for the Gemini reporting script)
+## Architecture
+
+```
+📹 Raw Body-Cam MP4s
+        │
+        ▼
+┌─────────────────────────────────────┐
+│  Stage 1 · first_person_pipeline.py │
+│  • MediaPipe wrist tracking (5 FPS) │
+│  • YOLOv8 construction objects      │
+│  • Global motion compensation       │
+│  • Activity classification          │
+└───────────────┬─────────────────────┘
+                │  master_dashboard.csv
+                │  outputs/*_plot.png
+                │  outputs/*_annotated.mp4
+                ▼
+┌─────────────────────────────────────┐
+│  Stage 2 · agent_video_analyzer.py  │
+│  • SSH tunnel → Ollama LLaVA (GPU)  │
+│  • 16 frames sampled by ffmpeg      │
+│  • Structured JSON response         │
+│  • AI_Trade, AI_UES, AI_Summary     │
+└───────────────┬─────────────────────┘
+                │  outputs/Agent_Analysis_*.json
+                │  master_dashboard.csv (enriched)
+                ▼
+        🖥️  dashboard.py (Streamlit)
+```
+
+---
+
+## Results (14 Videos Processed)
+
+| Metric | Value |
+|--------|-------|
+| Average Productivity | **91.9%** |
+| Average AI Efficiency (UES) | **85.4 / 100** |
+| Site Peak Exertion | **83.84 px** |
+| Trades Identified | Construction Workers (11), Plumbers (3) |
+| Stage 2 Processing Speed | **~8 seconds/video** on GPU |
+
+---
+
+## Project Structure
+
+```
+├── first_person_pipeline.py     # Stage 1: OpenCV batch processor
+├── agent_video_analyzer.py      # Stage 2: Ollama LLaVA vision agent
+├── batch_agent_analysis.py      # Runs Stage 2 across all videos
+├── dashboard.py                 # Streamlit supervisor dashboard
+├── analyze_results.py           # Gemini text-based site report (legacy)
+├── apply_global_motion.py       # Camera-shake compensation utility
+├── recalculate_metrics.py       # Recalculate metrics from existing CSVs
+├── master_dashboard.csv         # Aggregated metrics (both stages)
+├── requirements.txt             # Python dependencies
+├── outputs/
+│   ├── Agent_Analysis_*.json    # Per-video AI analysis
+│   ├── *_plot.png               # Exertion time-series plots
+│   ├── *_data.csv               # Per-frame exertion data
+│   └── Final_AI_Site_Report.txt # Text-based executive summary
+├── hand_landmarker.task         # MediaPipe model
+├── yolov8n-construction.pt      # Custom YOLOv8 construction model
+└── IronsiteHackathonData/       # Raw MP4s (gitignored)
+```
+
+---
 
 ## Setup & Execution
 
-1.  Place raw `.mp4` videos in an `IronsiteHackathonData/` directory.
-2.  Ensure you have the required models downloaded (`hand_landmarker.task` and `yolov8n-construction.pt`) in the root directory.
-3.  Run the main pipeline:
-    ```bash
-    python first_person_pipeline.py
-    ```
-4.  Launch the supervisor dashboard:
-    ```bash
-    streamlit run dashboard.py
-    ```
-5.  (Optional) Generate an AI Site Report (requires a valid Google AI Studio API key in the script):
-    ```bash
-    python analyze_results.py
-    ```
+### Requirements
+
+```bash
+pip install -r requirements.txt
+# Also requires: ffmpeg, opencv-python, mediapipe, ultralytics
+```
+
+### Stage 1 — OpenCV Pipeline
+
+```bash
+# Place raw .mp4 files in IronsiteHackathonData/
+python3 first_person_pipeline.py
+```
+
+Outputs to `outputs/` and writes `master_dashboard.csv`.
+
+### Stage 2 — AI Vision Agent (Ollama LLaVA)
+
+Requires a running Ollama instance with `llava:latest`. Using Vast.ai remote GPU:
+
+```bash
+# 1. Start SSH tunnel (maps remote Ollama to localhost:11434)
+ssh -p 56834 root@YOUR_VAST_IP -L 8080:localhost:11434
+
+# 2. Set env var (or edit .env)
+OLLAMA_BASE_URL=http://localhost:11434
+OLLAMA_VISION_MODEL=llava:latest
+
+# 3. Run batch analysis
+python3 batch_agent_analysis.py
+```
+
+To process a single video:
+```bash
+python3 agent_video_analyzer.py IronsiteHackathonData/14_production_mp.mp4
+```
+
+### Launch Dashboard
+
+```bash
+streamlit run dashboard.py
+# → http://localhost:8501
+```
+
+### Deploy to Streamlit Community Cloud
+
+1. Push repo to GitHub (already done ✅)
+2. Go to [share.streamlit.io](https://share.streamlit.io) → **New app**
+3. Select repo `sujeetmadihalli/Hackathon_BuilderBobs` · branch `main` · file `dashboard.py`
+4. Click **Deploy**
+
+---
+
+## AI Analysis Output Schema
+
+Each video produces an `outputs/Agent_Analysis_{video}.json`:
+
+```json
+{
+  "primary_trade": "Plumber",
+  "specific_tasks": "Fixing pipes, cutting materials",
+  "quantified_output": "10 joints welded, 2 pipes cut",
+  "universal_efficiency_score": 96,
+  "performance_summary": "The plumber demonstrates high physical exertion and efficiency in completing the tasks at hand."
+}
+```
+
+---
+
+## Tech Stack
+
+| Component | Technology |
+|-----------|-----------|
+| Computer Vision | OpenCV, MediaPipe HandLandmarker, YOLOv8 |
+| AI Vision Model | Ollama LLaVA 7B (self-hosted on Vast.ai) |
+| Frame Extraction | ffmpeg |
+| Dashboard | Streamlit + Altair |
+| Data | pandas, CSV |
+| Remote GPU | Vast.ai (SSH tunnel) |
+| Deployment | Streamlit Community Cloud |
+
+---
+
+*BuilderBobs · IronSite Hackathon 2026*
