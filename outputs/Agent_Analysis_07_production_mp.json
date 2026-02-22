@@ -1,0 +1,7 @@
+{
+    "primary_trade": "Construction Worker",
+    "specific_tasks": "Inspecting, repairing or installing pipes in a construction site",
+    "quantified_output": "10 joints welded, 2 pipes cut",
+    "universal_efficiency_score": 85,
+    "performance_summary": "The worker is diligent and efficient in performing the tasks at hand, ensuring that the construction site remains safe and functional."
+}

@@ -1,0 +1,9 @@
+{
+    "primary_trade": "Construction Worker",
+    "specific_tasks": [
+        "Laying bricks, Operating construction equipment"
+    ],
+    "quantified_output": "10 bricks laid, 2 pieces of equipment operated",
+    "universal_efficiency_score": 95,
+    "performance_summary": "The worker demonstrates a high level of productivity and physical exertion in the construction process, efficiently laying bricks and operating machinery to support the building's structure."
+}

@@ -1,0 +1,9 @@
+{
+    "primary_trade": "Construction Worker",
+    "specific_tasks": [
+        "Laying bricks, Operating machinery, Material handling"
+    ],
+    "quantified_output": "10 blocks laid, 2 pipes cut",
+    "universal_efficiency_score": 85,
+    "performance_summary": "The worker demonstrates a high level of physical exertion and efficiency in the construction process."
+}

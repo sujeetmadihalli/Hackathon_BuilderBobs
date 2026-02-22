@@ -1,0 +1,9 @@
+{
+    "primary_trade": "Construction Worker",
+    "specific_tasks": [
+        "Inspecting pipes, Cutting metal, Welding joints"
+    ],
+    "quantified_output": "10 joints welded, 2 pipes cut",
+    "universal_efficiency_score": 95,
+    "performance_summary": "The worker demonstrates a high level of skill and efficiency in their work, ensuring the quality of the construction project."
+}

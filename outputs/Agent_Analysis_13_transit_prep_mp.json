@@ -1,0 +1,9 @@
+{
+    "primary_trade": "Construction Worker",
+    "specific_tasks": [
+        "Handling construction materials, working with tools"
+    ],
+    "quantified_output": "10 pieces of lumber cut and secured",
+    "universal_efficiency_score": 85,
+    "performance_summary": "Demonstrates focus and precision in handling materials and tools."
+}

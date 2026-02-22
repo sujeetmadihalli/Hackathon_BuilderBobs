@@ -1,0 +1,9 @@
+{
+    "primary_trade": "Construction Worker",
+    "specific_tasks": [
+        "Building construction site, handling materials, operating machinery"
+    ],
+    "quantified_output": "100% of the video",
+    "universal_efficiency_score": 72.25,
+    "performance_summary": "The worker appears to be diligent and focused on the task at hand, demonstrating a high level of physical exertion while constructing the site."
+}

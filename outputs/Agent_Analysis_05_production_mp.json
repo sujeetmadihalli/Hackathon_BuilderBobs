@@ -1,0 +1,9 @@
+{
+    "primary_trade": "Plumber",
+    "specific_tasks": [
+        "Fixing pipes, Cutting materials"
+    ],
+    "quantified_output": "10 joints welded, 2 pipes cut",
+    "universal_efficiency_score": 96.4,
+    "performance_summary": "The plumber demonstrates high physical exertion and efficiency in completing the tasks at hand."
+}

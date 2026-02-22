@@ -1,0 +1,13 @@
+Here is the site report based on the provided computer vision data:
+
+**1. Executive Summary**
+Site activity today demonstrated generally high productivity across monitored areas, with an average site productivity of 93.2%. Most detected work revolved around interaction with personal protective equipment, indicating consistent worker presence and engagement.
+
+**2. Productivity Standouts**
+The highest productivity was observed in two instances, both achieving 100.0%: video **02_production_masonry** and video **11_prep_masonry**. In both cases, the detected task was "Handling Hardhat."
+
+**3. Ergonomic & Safety Warnings**
+The highest peak exertion of 83.84 pixels/frame was observed in video **03_production_masonry**. While "Handling Hardhat" itself is not typically strenuous, high exertion during this detected task could indicate frequent or awkward manipulation of PPE, potentially stemming from activities requiring repetitive reaching, bending, or working in confined spaces. This sustained exertion could lead to musculoskeletal strain over time. A safety check is recommended for the worker in the area covered by video **03_production_masonry** to assess work postures, task repetition, and environmental factors contributing to high physical demands.
+
+**4. Task Distribution**
+Across all 14 video feeds, the sole and most common detected task was "Handling Hardhat." This indicates that the primary observable activity identified by the computer vision pipeline on site today involved workers interacting with or wearing their hardhats, serving as a general indicator of active human presence and engagement.

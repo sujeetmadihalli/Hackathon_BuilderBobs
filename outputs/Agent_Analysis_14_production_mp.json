@@ -1,0 +1,9 @@
+{
+    "primary_trade": "Construction Worker",
+    "specific_tasks": [
+        "Inspecting construction site, checking for safety hazards, ensuring proper installation of materials"
+    ],
+    "quantified_output": "10 joints inspected, 2 pipes installed",
+    "universal_efficiency_score": 85,
+    "performance_summary": "The worker appears to be diligent and focused on the task at hand, ensuring safety and quality in the construction process."
+}

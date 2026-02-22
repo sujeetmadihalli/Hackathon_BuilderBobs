@@ -1,0 +1,9 @@
+{
+    "primary_trade": "Plumber",
+    "specific_tasks": [
+        "Tightening pipes, Welding joints"
+    ],
+    "quantified_output": "5 joints welded",
+    "universal_efficiency_score": 92.9,
+    "performance_summary": "The plumber is demonstrating a high level of physical exertion and attention to detail while performing the tasks at hand."
+}

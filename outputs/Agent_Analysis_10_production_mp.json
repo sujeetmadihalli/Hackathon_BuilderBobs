@@ -1,0 +1,9 @@
+{
+    "primary_trade": "Construction Worker",
+    "specific_tasks": [
+        "Welding, Cutting, Drilling"
+    ],
+    "quantified_output": "10 joints welded, 2 pipes cut",
+    "universal_efficiency_score": 96.9,
+    "performance_summary": "The construction worker demonstrates high physical exertion and efficiency in completing the tasks."
+}

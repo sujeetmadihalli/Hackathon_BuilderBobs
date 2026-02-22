@@ -1,11 +1,9 @@
 # Data & Video Files
 *.mp4
-*.png
-*.csv
-IronsiteHackathonData/
-outputs/
 exertion_data.csv
-master_dashboard.csv
+
+# Raw video frame data - too large
+IronsiteHackathonData/
 
 # AI Models
 *.pt
@@ -21,4 +19,6 @@ env/
 # OS Files
 .DS_Store
 Thumbs.db
+
+# Secrets - NEVER commit
 .env
